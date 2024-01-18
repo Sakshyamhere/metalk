@@ -1,11 +1,16 @@
-const mongoose = require('mongoose');
-const DBurl = "mongodb+srv://sakshyamblog:sakshyam@contact.7qlkr1c.mongodb.net/?retryWrites=true&w=majority"
+import mongoose from 'mongoose';
 
+const DBurl = "mongodb://localhost:27017/metalk";
 
-connectDB().catch(err => console.log(err));
-
- export default async function connectDB() {
-  await mongoose.connect(DBurl);
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+export default async function connectDB() {
+  try {
+    await mongoose.connect(DBurl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+    throw error; // Rethrow the error for the calling code to handle
+  }
 }

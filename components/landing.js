@@ -4,23 +4,31 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import SignUp from "./SignUp";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function Landing() {
-    const router = useRouter()
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [renderSignup, setRenderSignup] = useState(false);
-  const handleLogin = async() => {
-    const response = await axios.get("http://localhost:3000/api/getallusers")
+  const [auth, setAuth] = useState(true);
+  const handleLogin = async () => {
+    const response = await axios.get("http://localhost:3000/api/getallusers");
     for (let i = 0; i < response.data.length; i++) {
-        const element = response.data[i];
-        if (email == element.email && password == element.password) {
-            localStorage.setItem("data", JSON.stringify(element));
-            localStorage.setItem("loggedIn", true)
-          router.push('/')
-        }
-        
+      const element = response.data[i];
+      if (email == element.email && password == element.password) {
+        localStorage.setItem("data", JSON.stringify(element));
+        localStorage.setItem("loggedIn", true);
+        window.location.href = "/";
+      } else {
+        setTimeout(() => {
+        setAuth(false);
+        }, "400");
+        setTimeout(() => {
+          setAuth(true);
+        }, "1000");
+      }
     }
   };
   const RedirSignUp = () => {
@@ -31,6 +39,13 @@ function Landing() {
       {!renderSignup && (
         <div className="flex flex-col justify-center h-screen sm:mx-5 mx-auto items-center">
           <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8  w-full shadow-lg">
+            {!auth && (
+              <span className="text-center">
+                <p className="text-red-300 text-xl bg-red-900 p-2 rounded-md">
+                  User not found.
+                </p>
+              </span>
+            )}
             <h2 className="text-gray-900 text-2xl font-medium title-font my-2 mb-5">
               Login
             </h2>
@@ -84,9 +99,9 @@ function Landing() {
             >
               Login
             </button>
-            <p className="text-lg my-2 text-center text-blue-600">
+            <Link className="text-lg my-2 text-center text-blue-600" href='/'>
               Forgot Password?
-            </p>
+            </Link>
             <hr />
             <button
               className="text-white bg-green-500 border-0 py-2 px-10 mx-auto flex rounded text-lg my-4"
@@ -97,7 +112,7 @@ function Landing() {
           </div>
         </div>
       )}
-      {renderSignup && <SignUp/>}
+      {renderSignup && <SignUp />}
     </main>
   );
 }

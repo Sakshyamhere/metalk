@@ -6,17 +6,17 @@ connectDB();
 
   if (req.method == "POST") {
     try {
-      const { fullName, email, password, phoneNumber } = req.body.data;
+      const { fullname, email, password, phonenumber } = req.body.data
       const emailExist = await user.findOne({"email" : email})
       if (emailExist) {
         res.status(409).json({user : "User Already Exist"})
       }
       else {
       const person = new user({
-        name: fullName,
+        fullname: fullname,
         email: email,
         password: password,
-        phonenumber: phoneNumber,
+        phonenumber: phonenumber,
       });
       await person.save();
       res.status(200).json({ done: true, user: person });    

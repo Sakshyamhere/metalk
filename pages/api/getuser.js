@@ -1,11 +1,10 @@
-import messageSchema from "@/models/messageSchema";
+import userSchema from "@/models/userSchema";
 
 const handler = async (req, res, next) => {
-  const sender = req.query.sender;
-  const reciever = req.query.reciever
+    const email = req.query.email
   if (req.method === 'GET') {
     try {
-      const result = await messageSchema.find({ senderemail: sender, recieveremail: reciever });
+      const result = await userSchema.find({email});
       res.status(200).send(result);
     } catch (error) {
       console.log(`Error: ${error}`);

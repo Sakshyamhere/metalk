@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-name : {
+fullname : {
     type:String,
     require:true
 },
@@ -18,6 +18,13 @@ password : {
 phonenumber : {
     type:String,
     required:true,
+},
+image : {
+    data : Buffer,
+    type : String
+},
+bio : {
+    type: String
 }
 });
 
