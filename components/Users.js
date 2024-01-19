@@ -4,12 +4,12 @@ import { FaArrowLeft } from "react-icons/fa";
 
 function Users(props) {
   const [users, setUsers] = useState([]);
-  const [useremail, setUseremail] = useState('')
+  const [useremail, setUseremail] = useState("");
   const [getuser, setGetuser] = useState({});
   const [showuser, setShowuser] = useState(false);
   useEffect(() => {
     setUseremail(localStorage.getItem("data").email);
-    fetchUser()
+    fetchUser();
   }, []);
   const fetchUser = async () => {
     const resusers = await axios.get(`http://localhost:3000/api/getallusers`);
@@ -44,7 +44,14 @@ function Users(props) {
                   alt={items.fullname}
                   onClick={() => profileClick(items.email)}
                 />
-                <p className="my-4 mx-2 text-3xl cursor-pointer" onClick={() => props.message(items.email)}>{items.fullname}</p>
+                <p
+                  className="my-4 mx-2 text-3xl cursor-pointer"
+                  onClick={() =>
+                    props.message(items.email, items.fullname, items.image)
+                  }
+                >
+                  {items.fullname}
+                </p>
               </div>
             );
           })}
@@ -72,13 +79,21 @@ function Users(props) {
                 </span>
               </div>
               <p className=" my-2 text-3xl font-bold">{getuser.fullname}</p>
-              <p className=" my-2 text-md font-sm">{typeof getuser.bio !=  "undefined" ? getuser.bio : 'Available on .Metalk'}</p>
-                <span>
-              <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">Phonenumber : {getuser.phonenumber}</p>
-                </span>
-                <span>
-              <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">Email : {getuser.email}</p>
-                </span>
+              <p className=" my-2 text-md font-sm">
+                {typeof getuser.bio != "undefined"
+                  ? getuser.bio
+                  : "Available on .Metalk"}
+              </p>
+              <span>
+                <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">
+                  Phonenumber : {getuser.phonenumber}
+                </p>
+              </span>
+              <span>
+                <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">
+                  Email : {getuser.email}
+                </p>
+              </span>
             </div>
           </div>
         </div>

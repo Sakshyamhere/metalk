@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     if(req.method == "POST"){
         try {
 
-            const {senderemail , recieveremail , text } = req.body;
+            const {senderemail , recieveremail , text } = req.body.data;
             const messages = new message({
                senderemail:senderemail,
                recieveremail : recieveremail,
