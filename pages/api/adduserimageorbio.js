@@ -6,9 +6,7 @@ export default async function handler(req, res) {
 
   if (req.method === "PUT") {
     try {
-      const { email, image , bio } = req.body;
-      console.log(email);
-
+      const { email, image , bio } = req.body.data;
       const person = await user.findOneAndUpdate(
         { email: email },
         { $set: { image: image, bio: bio } },

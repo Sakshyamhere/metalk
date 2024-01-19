@@ -20,7 +20,6 @@ phonenumber : {
     required:true,
 },
 image : {
-    data : Buffer,
     type : String
 },
 bio : {

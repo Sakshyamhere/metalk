@@ -1,14 +1,12 @@
-import axios, { all } from "axios";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 function Users(props) {
   const [users, setUsers] = useState([]);
-  const [useremail, setUseremail] = useState("");
   const [getuser, setGetuser] = useState({});
   const [showuser, setShowuser] = useState(false);
   useEffect(() => {
-    setUseremail(localStorage.getItem("data").email);
     fetchUser();
   }, []);
   const fetchUser = async () => {
@@ -40,7 +38,7 @@ function Users(props) {
                       ? items.image
                       : "./profile.svg"
                   }`}
-                  className="h-14 w-14 my-4 mx-2 "
+                  className="h-14 w-14  rounded-full my-4 mx-2 "
                   alt={items.fullname}
                   onClick={() => profileClick(items.email)}
                 />
@@ -73,7 +71,7 @@ function Users(props) {
                         ? getuser.image
                         : "./profile.svg"
                     }`}
-                    className="h-20 w-20"
+                    className="h-20 w-20 "
                     alt={getuser.fullname}
                   />
                 </span>

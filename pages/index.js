@@ -1,9 +1,10 @@
 import Users from "@/components/Users";
 import Landing from "@/components/landing";
-import axios, { all } from "axios";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
+import Editme from "@/components/Editme";
 export default function Home() {
   const [sessionStatus, setSessionStatus] = useState(false);
   const [message, setMessage] = useState(false);
@@ -13,20 +14,15 @@ export default function Home() {
   const [allmessage, setAllmessage] = useState([]);
   const [recieveremail, setRecieveremail] = useState("");
   const [textmessage, setTextmessage] = useState("");
-  const [toggleme, setToggleme] = useState(false);
-  const [profilebio, setProfilebio] = useState('')
-  const [toggleimage, setToggleimage] = useState(false)
   const [profileimg, setProfileimg] = useState('')
-  const [seeimg, setSeeimg] = useState(false)
-  const [uploadimg, setUploadimg] = useState(false)
+  const [toggleme, setToggleme] = useState(false)
   useEffect(() => {
     const status = localStorage.getItem("loggedIn");
     setSessionStatus(status);
     const user = JSON.parse(localStorage.getItem("data"));
     if (status) {
       setProfile(user);
-    setProfilebio(user.bio)
-    setProfileimg(user.image)
+      setProfileimg(user.image)
     }
   }, []);
   const handleTextmsg = (e) => {
@@ -77,14 +73,13 @@ export default function Home() {
     localStorage.clear();
     setSessionStatus(false);
   };
- console.log(profilebio)
   return (
     <div>
       {sessionStatus && (
         <div className="flex">
-          <div className="w-[30%] h-[90vh] bg-gray-100 my-10 ml-10 shadow-md">
+          <div className="w-[30%] h-[90vh] bg-gray-200 my-10 ml-10 shadow-md">
             <nav className="flex flex-row justify-between bg-gray-600">
-              <ul className="my-2 mx-2 flex items-center">
+              <ul className="my-2 mx-2 flex items-center cursor-pointer" onClick={(event) => setToggleme(true)}>
                 <li>
                   <img
                     src={`${
@@ -93,10 +88,10 @@ export default function Home() {
                         : "./profile.svg"
                     }`}
                     className="h-14 w-14 rounded"
-                    alt="profilepic"
-                    onClick={(event) => setToggleme(true)}
+                    alt="profilepic" 
                   />
                 </li>
+                <li className="mx-2 text-xl">{profile.fullname}</li>
               </ul>
               <ul className="my-2 mx-2">
                 <li>
@@ -109,63 +104,16 @@ export default function Home() {
                 </li>
               </ul>
             </nav>
-            {toggleme && (
-              <div className="ease-in">
-                <div className="flex flex-col">
-                  <FaArrowLeft
-                    onClick={(event) => setToggleme(false)}
-                    className="mt-14 mx-2 text-3xl cursor-pointer"
-                  />
-                  <div className="flex flex-col justify-center items-center">
-                    <div>
-                      <span className="bg-gray-200 justify-center">
-                        <img
-                          src={`${
-                            typeof profileimg !== "undefined"
-                              ? profileimg
-                              : "./profile.svg"
-                          }`}
-                          className="h-20 w-20"
-                          alt={profile.fullname}
-                          onClick={(event) => setToggleimage(true)}
-                          onDoubleClick={(event) => setToggleimage(false)}
-                        />
-                      
-                      </span>
-                      {toggleimage && (
-                          <div>
-                            <h1 onClick={(event) => setSeeimg(true)}>See image</h1>
-                            <h1 onClick={(event) => setUploadimg(true)}></h1>
-                          </div>
-                        )}
-                    </div>
-                    <p className=" my-2 text-3xl font-bold">
-                      {profile.fullname}
-                    </p>
-                    <p className=" my-2 text-md font-sm">
-                      <input type="text" value={ typeof profilebio != "undefined"
-                        ? profilebio
-                        : "Available on .Metalk"} 
-                        className="text-center bg-gray-100"
-                        onChange={(e) => setProfilebio(e.target.value)}
-                        />
-                     
-                    </p>
-                    <span>
-                      <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">
-                        Phonenumber : {profile.phonenumber}
-                      </p>
-                    </span>
-                    <span>
-                      <p className=" my-3 text-lg font-md bg-gray-300 p-4 rounded-lg">
-                        Email : {profile.email}
-                      </p>
-                    </span>
-                  </div>
-                </div>
-              </div>
+            {toggleme && ( 
+             <div>
+               <FaArrowLeft
+              onClick={() => setToggleme(false)}
+              className="mt-14 mx-2 text-3xl cursor-pointer"
+            />
+            <Editme/>
+             </div>
             )}
-            {!toggleme && <Users message={handleMessage} />}
+         {!toggleme &&  <Users message={handleMessage} />}
           </div>
           <div className="w-[60%] h-[90vh] bg-gray-300 my-10">
             {!message && (
@@ -186,7 +134,7 @@ export default function Home() {
                       src={`${
                         typeof image !== "undefined" ? image : "./profile.svg"
                       }`}
-                      className="h-14 w-14 rounded"
+                      className="h-14 w-14  rounded-full"
                       alt={username}
                     />
                     <p className="text-xl p-3">{username}</p>
