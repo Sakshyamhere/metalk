@@ -17,7 +17,8 @@ export default function Home() {
   const [profilebio, setProfilebio] = useState('')
   const [toggleimage, setToggleimage] = useState(false)
   const [profileimg, setProfileimg] = useState('')
-
+  const [seeimg, setSeeimg] = useState(false)
+  const [uploadimg, setUploadimg] = useState(false)
   useEffect(() => {
     const status = localStorage.getItem("loggedIn");
     setSessionStatus(status);
@@ -25,6 +26,7 @@ export default function Home() {
     if (status) {
       setProfile(user);
     setProfilebio(user.bio)
+    setProfileimg(user.image)
     }
   }, []);
   const handleTextmsg = (e) => {
@@ -86,8 +88,8 @@ export default function Home() {
                 <li>
                   <img
                     src={`${
-                      typeof profile.image !== "undefined"
-                        ? profile.image
+                      typeof profileimg !== "undefined"
+                        ? profileimg
                         : "./profile.svg"
                     }`}
                     className="h-14 w-14 rounded"
@@ -119,19 +121,21 @@ export default function Home() {
                       <span className="bg-gray-200 justify-center">
                         <img
                           src={`${
-                            typeof profile.image !== "undefined"
-                              ? profile.image
+                            typeof profileimg !== "undefined"
+                              ? profileimg
                               : "./profile.svg"
                           }`}
                           className="h-20 w-20"
                           alt={profile.fullname}
                           onClick={(event) => setToggleimage(true)}
+                          onDoubleClick={(event) => setToggleimage(false)}
                         />
                       
                       </span>
                       {toggleimage && (
                           <div>
-                            <h1>See image</h1>3
+                            <h1 onClick={(event) => setSeeimg(true)}>See image</h1>
+                            <h1 onClick={(event) => setUploadimg(true)}></h1>
                           </div>
                         )}
                     </div>
